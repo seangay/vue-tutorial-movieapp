@@ -1,28 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-toolbar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <router-link to='/' tag='span' style='cursor: pointer'>Movie Man</router-link>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-flex xs12 sm6 md3>
+        <v-text-field label='Movie Name' v-model='searchString'></v-text-field>
+      </v-flex>
+      <v-btn flat :disabled="!dataAvailable" @click="searchMovie">
+        <span class="mr-2">Search</span>
+      </v-btn>
+    </v-toolbar>
+    <v-content>
+      <router-view></router-view>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
+  },
+  data () {
+    return {
+      searchString: ''
+    }
+  },
+  methods: {
+    searchMovie() {
+      this.$router.push('/search/' + this.searchString)
+      this.searchString = ''
+    }
+  },
+  computed: {
+    dataAvailable() {
+      return this.searchString !== null && this.searchString !== ''
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
